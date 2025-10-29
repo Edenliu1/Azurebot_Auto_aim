@@ -35,9 +35,13 @@ void Pipeline::image_thread() {
         
         if (image.empty()) {
             std::cout << "图像为空，无法显示" << std::endl;
+            // Image is empty, cannot display
+            std::cout << "Image is empty, cannot display" << std::endl;
             continue;
         } else if (image.type() != CV_8UC1 && image.type() != CV_8UC3 && image.type() != CV_32FC1 && image.type() != CV_32FC3) {
             std::cout << "图像类型不受支持，无法显示" << std::endl;
+            // Image type not supported, cannot display
+            std::cout << "Image type not supported, cannot display" << std::endl;
             continue;
         } else {
             cv::Mat resized_image;

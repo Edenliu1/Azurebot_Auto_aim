@@ -97,19 +97,24 @@ struct InputData {
 
 struct OutputData {
     float       shoot_yaw;           // 经过自瞄预测的yaw角度
+                                     // Yaw angle predicted by auto-aim
     float       shoot_pitch;         // 经过自瞄预测的pitch角度
+                                     // Pitch angle predicted by auto-aim
     uint8_t     fire;                // 是否发弹
+                                     // Whether to fire
 } __attribute__((packed));
 #endif
 
 
 struct StateBytes {                     // 电控传给自瞄系统的云台数据
+                                        // Gimbal data passed from electrical control to auto-aim system
     FrameHeader frame_header;
     InputData   input_data;
     FrameTailer frame_tailer;   
 } __attribute__((packed));
 
 struct OperateBytes {                   // 自瞄返回给电控的控制数据
+                                        // Control data returned from auto-aim to electrical control
     FrameHeader frame_header;
     OutputData  output_data;
     FrameTailer frame_tailer;

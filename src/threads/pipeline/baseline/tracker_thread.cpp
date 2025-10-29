@@ -11,6 +11,7 @@ void Pipeline::tracker_baseline_thread(
     auto control = Control::get_instance();
 
     // 获取装甲板长宽
+    // Get armor plate width and height
     float big_width    = (*param)["Points"]["PnP"]["Red"]["BigArmor"]["Width"];
     float big_height   = (*param)["Points"]["PnP"]["Red"]["BigArmor"]["Height"];
     float small_width  = (*param)["Points"]["PnP"]["Red"]["SmallArmor"]["Width"];

@@ -15,7 +15,9 @@ void Pipeline::tracker_rune_thread(
     float rune_height = (*param)["Points"]["PnP"]["Rune"]["Height"];
 
     // 符的3D坐标, 以符在最右为原点
+    // Rune's 3D coordinates, with origin at the rightmost rune
     // 四点顺序：左上，左下，右下，右上
+    // Four-point order: top-left, bottom-left, bottom-right, top-right
     std::vector<cv::Point3f> Rune3D;
     Rune3D.emplace_back(-rune_height / 2, -rune_width / 2, 0);
     Rune3D.emplace_back(rune_height / 2, -rune_width / 2, 0);
@@ -58,9 +60,11 @@ void Pipeline::tracker_rune_thread(
         for (auto& yolo_rect : frame->yolo_list) {
 
             // 符的网络输出结果中target的类别为0，只保留target
+            // Target class in rune network output is 0, only keep target
             if(yolo_rect.class_id != 0) continue;
 
             // 如果检测到的装甲板不是四个点，跳过
+            // If detected armor plate doesn't have four points, skip
             if(yolo_rect.four_points.size() != 4) continue;
 
             rm::Armor armor;
@@ -81,9 +85,11 @@ void Pipeline::tracker_rune_thread(
             }
 
             // 保存符的目标
+            // Save rune target
             rm::Target target;
 
             // 计算符面旋转角度
+            // Calculate rune surface rotation angle
             cv::Rodrigues(rvec, rotate_cv);
             rm::tf_Mat3d(rotate_cv, rotate_pnp);
             rotate_world = rotate_head2world * rotate_pnp2head * rotate_pnp;
@@ -91,10 +97,12 @@ void Pipeline::tracker_rune_thread(
             target.armor_yaw_world = rm::tf_rotation2armoryaw(rotate_world);
 
             // 计算符面在世界坐标系下的坐标
+            // Calculate rune surface coordinates in world coordinate system
             rm::tf_Vec4d(tvec, pose_pnp);
             target.pose_world = trans_head2world * trans_pnp2head * pose_pnp;
 
             // 计算符的距离
+            // Calculate rune distance
             double distance = sqrt(target.pose_world(0, 0) * target.pose_world(0, 0) + 
                                 target.pose_world(1, 0) * target.pose_world(1, 0) + 
                                 target.pose_world(2, 0) * target.pose_world(2, 0));
@@ -102,10 +110,12 @@ void Pipeline::tracker_rune_thread(
             rm::message("pnp dist", distance);
             
             // 从车库中获取符的目标
+            // Get rune target from garage
             ObjPtr objptr = garage->getObj(rm::ARMOR_ID_RUNE);
             objptr->push(target, frame->time_point);
 
             // 当出现一个target后，不再更新
+            // Stop updating after one target appears
             break;
         }
 

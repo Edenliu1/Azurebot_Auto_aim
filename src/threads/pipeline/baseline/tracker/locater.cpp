@@ -10,21 +10,25 @@ void Pipeline::init_locater() {
     auto param = Param::get_instance();
 
     // 获取装甲板长宽
+    // Get armor plate width and height
     float bigArmorRed_width     = (*param)["Points"]["PnP"]["Red"]["BigArmor"]["Width"];
     float bigArmorRed_height    = (*param)["Points"]["PnP"]["Red"]["BigArmor"]["Height"];
     float smallArmorRed_width   = (*param)["Points"]["PnP"]["Red"]["SmallArmor"]["Width"];
     float smallArmorRed_height  = (*param)["Points"]["PnP"]["Red"]["SmallArmor"]["Height"];
 
     // 获取装甲板长宽
+    // Get armor plate width and height
     float bigArmorBlue_width    = (*param)["Points"]["PnP"]["Blue"]["BigArmor"]["Width"];
     float bigArmorBlue_height   = (*param)["Points"]["PnP"]["Blue"]["BigArmor"]["Height"];
     float smallArmorBlue_width  = (*param)["Points"]["PnP"]["Blue"]["SmallArmor"]["Width"];
     float smallArmorBlue_height = (*param)["Points"]["PnP"]["Blue"]["SmallArmor"]["Height"];
 
     // 获取PnP损失函数参数
+    // Get PnP loss function parameters
     plus_pnp_cost_image = (*param)["Debug"]["PlusPnP"]["CostImage"];
 
     // 设置装甲板3D坐标，顺序为左上-右上-左下-右下，即矩阵行优先输出顺序
+    // Set armor plate 3D coordinates, order: top-left, top-right, bottom-left, bottom-right, i.e., matrix row-major order
     BigArmorRed3D = new std::vector<cv::Point3f>();
     SmallArmorRed3D = new std::vector<cv::Point3f>();
 
@@ -39,6 +43,7 @@ void Pipeline::init_locater() {
     SmallArmorRed3D->emplace_back(smallArmorRed_width / 2, smallArmorRed_height / 2, 0);
 
     // 设置装甲板3D坐标，顺序为左上-右上-左下-右下，即矩阵行优先输出顺序
+    // Set armor plate 3D coordinates, order: top-left, top-right, bottom-left, bottom-right, i.e., matrix row-major order
     BigArmorBlue3D = new std::vector<cv::Point3f>();
     SmallArmorBlue3D = new std::vector<cv::Point3f>();
 

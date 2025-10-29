@@ -10,6 +10,7 @@ using std::ofstream;
 using std::string;
 
 // 加载json文件
+// Load json file
 bool Param::load(const string& path) {
     ifstream input_json(path);
     input_json >> params_;
@@ -17,24 +18,29 @@ bool Param::load(const string& path) {
 }
 
 // 保存为json文件
+// Save as json file
 void Param::dump(const std::string& path) {
     ofstream output_json(path);
     output_json << params_;
 }
 
 // 重载[]运算符，使用方法类似python字典
+// Overload [] operator, usage similar to Python dictionary
 json& Param::operator[](const std::string& key) {
     return params_.at(key);
 }
 
 // 将Mat转化为json对象
+// Convert Mat to json object
 void Param::to_json(json& json_info, const cv::Mat& mat_info) {
     // 获取矩阵的行数，列数和通道数
+    // Get matrix rows, columns, and channels
     int rows = mat_info.rows;
     int cols = mat_info.cols;
     int channel = mat_info.channels();
 
     // 将矩阵重塑为单通道32位浮点数类型
+    // Reshape matrix to single-channel 32-bit float type
     cv::Mat array = mat_info.reshape(1, 1);
     cv::Mat float_array;
     array.convertTo(float_array, CV_32FC1);
@@ -46,6 +52,7 @@ void Param::to_json(json& json_info, const cv::Mat& mat_info) {
 }
 
 // 将json对象转化为Mat
+// Convert json object to Mat
 void Param::from_json(const json& json_info, cv::Mat& mat_info) {
     int rows = json_info["rows"];
     int cols = json_info["cols"];

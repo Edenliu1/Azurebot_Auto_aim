@@ -16,10 +16,15 @@ WrapperRune::WrapperRune(ArmorID id) : ObjInterface(id) {
     vector<double> runeSpdR = (*param)["Kalman"]["Rune"]["SpdR"];
 
     double   big_rune_fire_spd = (*param)["Kalman"]["Rune"]["BigRuneFireSpd"];                         // 大符开火角速度
+                                                                                                        // Big rune fire angular velocity
     double   fire_after_trans_delay = (*param)["Kalman"]["Rune"]["FireAfterTransDelay"];               // 符切换后多久开火
+                                                                                                        // How long to fire after rune switch
     double   fire_flag_keep_delay = (*param)["Kalman"]["Rune"]["FireFlagKeepDelay"];                   // 开火信号保留时间
+                                                                                                        // Fire signal retention time
     double   fire_interval_delay = (*param)["Kalman"]["Rune"]["FireIntervalDelay"];                    // 两次开火间隔
+                                                                                                        // Interval between two fires
     double   turn_to_center_delay = (*param)["Kalman"]["Rune"]["TureToCenterDelay"];                   // 模型保留时间
+                                                                                                        // Model retention time
 
     rune_ = RuneV2();
     rune_.setSmallMatrixQ(runeSmallQ[0], runeSmallQ[1], runeSmallQ[2], runeSmallQ[3], runeSmallQ[4], runeSmallQ[5]);

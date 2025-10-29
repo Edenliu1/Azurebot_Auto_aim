@@ -2,6 +2,7 @@
 #define RM2024_THREADS_SERIAL_CRC_H_
 
 // Robomaster 官方提供的代码
+// Code provided officially by Robomaster
 
 #include <cstdint>
 #include <cstddef>

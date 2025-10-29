@@ -105,7 +105,9 @@ public:
     std::deque<std::pair<TimePoint, StateBytes>> state_queue_;
 
     StateBytes              state_bytes_;             // 电控 -> 自瞄
+                                                      // Electrical control -> Auto-aim
     OperateBytes            operate_bytes_;           // 自瞄 -> 电控
+                                                      // Auto-aim -> Electrical control
 
     int                     file_descriptor_;
     std::string             port_name_;

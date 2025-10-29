@@ -21,8 +21,11 @@ public:
     rm::AntitopV3* antitop_4_;
 
     bool   flag_big_armor_ = false;         // 是否为大装甲板
+                                            // Whether it's a large armor plate
     int    armor_size_count_ = 0;           // 装甲板尺寸计数
+                                            // Armor plate size count
     int    curr_armor_num_ = 0;             // 当前一次更新内观测的装甲板数量
+                                            // Number of armor plates observed in the current update
 
     bool flag_antitop_ = false;
     bool flag_center_ = false;

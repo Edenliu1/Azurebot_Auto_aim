@@ -1,26 +1,32 @@
 #include "data_manager/base.h"
 
 // 颜色
+// Color
 rm::ArmorColor Data::self_color;
 rm::ArmorColor Data::enemy_color;
 
 // 本机编号
+// Local machine ID
 rm::ArmorID Data::self_id;
 
 // 当前核心打击目标
+// Current core strike target
 rm::ArmorID Data::target_id;
 double Data::target_omega;
 double Data::target_dist;
 
 // 相机的参数记录
+// Camera parameter records
 std::vector<rm::Camera*> Data::camera;
 int Data::camera_index;
 int Data::camera_base, Data::camera_far;
 
 // 击打目标
+// Strike target
 rm::AttackInterface* Data::attack;
 
 // 串口数据
+// Serial port data
 uint8_t Data::state;
 float Data::yaw   = 0.0;
 float Data::pitch = 0.0;
@@ -28,6 +34,7 @@ float Data::roll  = 0.0;
 float Data::yaw_omega = 0.0;
 
 // debug模式
+// Debug mode
 bool Data::auto_fire;
 
 bool Data::auto_enemy;

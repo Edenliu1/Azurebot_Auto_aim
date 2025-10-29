@@ -48,6 +48,7 @@ bool init_camera() {
     auto control = Control::get_instance();
 
     // 获取相机参数矩阵json
+    // Get camera parameter matrix json
     nlohmann::json camlens;
     std::string camlen_path = (*param)["Camera"]["CamLensDir"];
     try {
@@ -61,6 +62,7 @@ bool init_camera() {
     }
 
     // 获取相机数量
+    // Get camera count
     int camera_num;
     bool flag_camera = rm::getDaHengCameraNum(camera_num);
     Data::camera.clear();
@@ -71,6 +73,7 @@ bool init_camera() {
     }
     rm::message("get camera number "+ std::to_string(camera_num), rm::MSG_NOTE);
     // 初始化单相机
+    // Initialize single camera
     if(camera_num == 1) {
         Data::camera_index = 1;
         Data::camera_base = 1;
@@ -102,6 +105,7 @@ bool init_camera() {
 
 
     // 初始化双相机
+    // Initialize dual camera
     } else if (camera_num == 2) {
         double exp_base = (*param)["Camera"]["Base"]["ExposureTime"];
         double gain_base = (*param)["Camera"]["Base"]["Gain"];

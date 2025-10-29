@@ -44,6 +44,7 @@ void Pipeline::init_pointer() {
     auto param = Param::get_instance();
 
     // 设置装甲板ID映射
+    // Set armor plate ID mapping
     std::string      yolo_type      = (*param)["Model"]["YoloArmor"]["Type"];
     std::vector<int> temp_class_map = (*param)["Model"]["YoloArmor"][yolo_type]["ClassMap"];
     std::vector<int> temp_color_map = (*param)["Model"]["YoloArmor"][yolo_type]["ColorMap"];
@@ -74,12 +75,14 @@ void Pipeline::init_pointer() {
 
 
     // 获取装甲板长宽
+    // Get armor plate width and height
     big_red_width          = (*param)["Points"]["PnP"]["Red"]["BigArmor"]["Width"];
     big_red_height         = (*param)["Points"]["PnP"]["Red"]["BigArmor"]["Height"];
     small_red_width        = (*param)["Points"]["PnP"]["Red"]["SmallArmor"]["Width"];
     small_red_height       = (*param)["Points"]["PnP"]["Red"]["SmallArmor"]["Height"];
 
     // 获取装甲板长宽
+    // Get armor plate width and height
     big_blue_width         = (*param)["Points"]["PnP"]["Blue"]["BigArmor"]["Width"];
     big_blue_height        = (*param)["Points"]["PnP"]["Blue"]["BigArmor"]["Height"];
     small_blue_width       = (*param)["Points"]["PnP"]["Blue"]["SmallArmor"]["Width"];

@@ -22,12 +22,14 @@ void Pipeline::init_fourpoints() {
     armor_size_ratio = (*param)["Points"]["Armor"]["SizeRatio"];
 
     // 获取装甲板长宽
+    // Get armor plate width and height
     float bigArmor_width = (*param)["Points"]["PnP"]["Red"]["BigArmor"]["Width"];
     float bigArmor_height = (*param)["Points"]["PnP"]["Red"]["BigArmor"]["Height"];
     float smallArmor_width = (*param)["Points"]["PnP"]["Red"]["SmallArmor"]["Width"];
     float smallArmor_height = (*param)["Points"]["PnP"]["Red"]["SmallArmor"]["Height"];
 
     // 设置装甲板3D坐标，顺序为左上-右上-左下-右下，即矩阵行优先输出顺序
+    // Set armor plate 3D coordinates, order: top-left, top-right, bottom-left, bottom-right, i.e., matrix row-major order
     BigArmor3D = new std::vector<cv::Point3f>();
     SmallArmor3D = new std::vector<cv::Point3f>();
 
@@ -42,12 +44,14 @@ void Pipeline::init_fourpoints() {
     SmallArmor3D->emplace_back(smallArmor_width / 2, smallArmor_height / 2, 0);
 
     // 获取图传偏移参数
+    // Get image transmission offset parameters
     std::vector<double> temp_referee_offset = (*param)["Car"]["RefereeOffset"];
     std::vector<double> temp_axis_offset    = (*param)["Car"]["AxisOffset"];
     referee_offset = temp_referee_offset;
     axis_offset    = temp_axis_offset;
 
     // 设置装甲板ID映射
+    // Set armor plate ID mapping
     std::string      yolo_type      = (*param)["Model"]["YoloArmor"]["Type"];
     std::vector<int> temp_class_map = (*param)["Model"]["YoloArmor"][yolo_type]["ClassMap"];
     std::vector<int> temp_color_map = (*param)["Model"]["YoloArmor"][yolo_type]["ColorMap"];
@@ -55,6 +59,7 @@ void Pipeline::init_fourpoints() {
     armor_color_map = temp_color_map;
 
     // 设置重投影参数
+    // Set reprojection parameters
     double small_width     = (*param)["Points"]["PnP"]["Red"]["SmallArmor"]["Width"];
     double small_heigth    = (*param)["Points"]["PnP"]["Red"]["SmallArmor"]["Height"];
     double big_width       = (*param)["Points"]["PnP"]["Red"]["BigArmor"]["Width"];
@@ -63,6 +68,7 @@ void Pipeline::init_fourpoints() {
     std::string big_path   = (*param)["Debug"]["BigDecal"];
 
     // 初始化重投影
+    // Initialize reprojection
     if(Data::reprojection_flag) {
         rm::initReprojection(small_width, small_heigth, big_width, big_heigth, small_path, big_path);
     }
@@ -86,6 +92,7 @@ bool Pipeline::fourpoints(std::shared_ptr<rm::Frame> frame) {
 
 
     // 根据相机ID获取相机参数，得到旋转矩阵和平移矩阵
+    // Get camera parameters based on camera ID, obtain rotation and translation matrices
     rotate_pnp2head = Data::camera[frame->camera_id]->Rotate_pnp2head;
     rm::tf_rotate_head2world(rotate_head2world, frame->yaw, frame->pitch);
 
@@ -94,16 +101,20 @@ bool Pipeline::fourpoints(std::shared_ptr<rm::Frame> frame) {
 
 
     // 遍历所有检测到的装甲板
+    // Iterate through all detected armor plates
     for (auto& yolo_rect : frame->yolo_list) {
 
         // 如果检测到的装甲板不是四个点，跳过
+        // If detected armor plate doesn't have four points, skip
         if(yolo_rect.four_points.size() != 4) continue;
 
         // 根据推理结果设置装甲板ID
+        // Set armor plate ID based on inference results
         rm::ArmorID armor_id = (rm::ArmorID)armor_class_map[yolo_rect.class_id];
         rm::ArmorColor armor_color = (rm::ArmorColor)armor_class_map[yolo_rect.color_id];
 
         // 创建装甲板对象并设置参数
+        // Create armor plate object and set parameters
         rm::Armor armor;
         armor.id = armor_id;
         armor.color = armor_color;
@@ -114,11 +125,13 @@ bool Pipeline::fourpoints(std::shared_ptr<rm::Frame> frame) {
         rm::resetArmorFourPoints(*(frame->image), armor, 0.3);
 
         // 显示装甲板分类信息
+        // Display armor plate classification information
         if (Data::imshow_flag) {
             rm::displaySingleArmorClass(*(frame->image), armor);
         }
         
         // 显示装甲板投影信息
+        // Display armor plate projection information
         if (Data::imshow_flag && Data::reprojection_flag) {
             rm::setReprojection(*(frame->image), *(frame->image), armor.four_points, armor.size);
         } else {
@@ -126,6 +139,7 @@ bool Pipeline::fourpoints(std::shared_ptr<rm::Frame> frame) {
         }
 
         // 根据装甲板大小选择3D坐标
+        // Select 3D coordinates based on armor plate size
         std::vector<cv::Point3f> *Armor3D;
         if(armor.size == rm::ARMOR_SIZE_BIG_ARMOR) {
             Armor3D = BigArmor3D;
@@ -136,6 +150,7 @@ bool Pipeline::fourpoints(std::shared_ptr<rm::Frame> frame) {
         }
         
         // 使用solvePnP求解旋转和平移参数
+        // Use solvePnP to solve rotation and translation parameters
         try {
             cv::solvePnP(*Armor3D, armor.four_points,
                 Data::camera[frame->camera_id]->intrinsic_matrix,
@@ -148,27 +163,32 @@ bool Pipeline::fourpoints(std::shared_ptr<rm::Frame> frame) {
 
 
         // 创建目标对象并设置参数
+        // Create target object and set parameters
         rm::Target target;
         target.armor_id = armor_id;
         target.armor_size = armor.size;
 
         // 计算旋转矩阵和装甲板角度
+        // Calculate rotation matrix and armor plate angle
         cv::Rodrigues(rvec, rotate_cv);
         rm::tf_Mat3d(rotate_cv, rotate_pnp);
         rotate_world = rotate_head2world * rotate_pnp2head * rotate_pnp;
         target.armor_yaw_world = rm::tf_rotation2armoryaw(rotate_world);
 
         // 计算装甲板世界坐标
+        // Calculate armor plate world coordinates
         rm::tf_Vec4d(tvec, pose_pnp);
         pose_world = trans_head2world * trans_pnp2head * pose_pnp;
         target.pose_world = pose_world;
 
 
         // 从车库中获取目标
+        // Get target from garage
         ObjPtr objptr = garage->getObj(armor_id);
         objptr->push(target, frame->time_point);
 
         // 计算目标与图传的角度偏差
+        // Calculate angular deviation between target and image transmission
         double angle = rm::getAngleOffsetTargetToReferee(
             control->get_yaw(), control->get_pitch(),
             target.pose_world(0, 0), target.pose_world(1, 0), target.pose_world(2, 0),
@@ -177,6 +197,7 @@ bool Pipeline::fourpoints(std::shared_ptr<rm::Frame> frame) {
         );
 
         // 更新攻击队列
+        // Update attack queue
         Data::attack->push(armor_id, angle, frame->time_point);
     }
 

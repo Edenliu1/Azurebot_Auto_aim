@@ -67,15 +67,18 @@ void Control::state() {
     auto garage = Garage::get_instance();
 
     // 通过电控获取敌方颜色
+    // Get enemy color through electrical control
     Data::enemy_color = get_enemy();
     Data::self_color = (Data::enemy_color == rm::ARMOR_COLOR_BLUE) ? rm::ARMOR_COLOR_RED : rm::ARMOR_COLOR_BLUE;
 
     // 确定自瞄状态，开始录制
+    // Determine auto-aim state, start recording
     if (Data::auto_capture && !get_autoaim()) pipeline->start_record();
     else if (!Data::auto_capture && Data::manu_capture) pipeline->start_record();
     else pipeline->stop_record();
 
     // 确定自瞄状态，记录开始自瞄时间点
+    // Determine auto-aim state, record auto-aim start time
     if (!last_autoaim && get_autoaim()) {
         start_autoaim = getTime();
         Data::attack->clear();
@@ -83,6 +86,7 @@ void Control::state() {
     last_autoaim = get_autoaim();
 
     // 获取攻击目标
+    // Get attack target
     if(Data::armor_mode) Data::target_id = Data::attack->pop();
     else if (Data::rune_mode) Data::target_id = rm::ARMOR_ID_RUNE;
     else Data::target_id = rm::ARMOR_ID_UNKNOWN;
@@ -109,6 +113,7 @@ void Control::state() {
     #endif
 
     // 更新自瞄状态
+    // Update auto-aim state
     #if defined(TJURM_INFANTRY) || defined(TJURM_BALANCE)
     if (Data::auto_rune) {
         if (Data::state == 0 || Data::state == 1) pipeline->switch_rune_to_armor();
@@ -171,8 +176,10 @@ void Control::send_thread() {
         this->message();            // 统一终端发消息
         this->state();              // 根据串口更新状态
         this->shootspeed();         // 英雄弹速寄存器
+                                    // Hero projectile speed register
 
         // 根据目标id判断是否需要自瞄
+        // Determine if auto-aim is needed based on target ID
         if(Data::target_id == rm::ARMOR_ID_UNKNOWN) {
             #if defined(TJURM_INFANTRY) || defined(TJURM_BALANCE) || defined(TJURM_DRONSE)
             continue;
@@ -197,6 +204,7 @@ void Control::send_thread() {
         }
 
         // 迭代法求解击打 yaw, pitch
+        // Iterative method to solve strike yaw, pitch
         auto objptr = garage->getObj(Data::target_id);
         objptr->getTarget(pose, 0.0, 0.0, 0.0);
         for(int i = 0; i < iteration_num; i++) {
@@ -207,6 +215,7 @@ void Control::send_thread() {
         Data::target_dist = sqrt(pow(pose(0, 0), 2) + pow(pose(1, 0), 2) + pow(pose(2, 0), 2));
         
         // 如果返回坐标为0, 确定控制信号
+        // If returned coordinates are 0, determine control signal
         if ((std::abs(pose[0]) < 1e-2) && (std::abs(pose[1]) < 1e-2)) {
             #if defined(TJURM_INFANTRY) || defined(TJURM_BALANCE) || defined(TJURM_DRONSE)
             continue;
@@ -231,6 +240,7 @@ void Control::send_thread() {
         }
 
         // 控制发弹
+        // Control firing
         bool start_delay_flag = (getDoubleOfS(start_autoaim, getTime()) > start_fire_delay);
         bool autoaim_flag = get_autoaim();
 
