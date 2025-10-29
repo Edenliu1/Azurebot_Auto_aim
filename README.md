@@ -1,56 +1,56 @@
 # TJURM-2024
 
-**北洋机甲2024自瞄框架**
+**Beiyang RoboMaster 2024 Auto-Aiming Framework**
 
 
 
 ---
 
-**本框架需配合视觉算法库 [OpenRM](https://github.com/HHgzs/OpenRM-2024) 食用**
+**This framework requires the vision algorithm library [OpenRM](https://github.com/HHgzs/OpenRM-2024) to work**
 
 
-**欢迎查看Wiki，获取更多信息 [TJURM自瞄算法Wiki](https://github.com/HHgzs/TJURM-2024/wiki/TJURM%E8%87%AA%E7%9E%84%E7%AE%97%E6%B3%95Wiki)**
+**Welcome to check the Wiki for more information [TJURM Auto-Aiming Algorithm Wiki](https://github.com/HHgzs/TJURM-2024/wiki/TJURM%E8%87%AA%E7%9E%84%E7%AE%97%E6%B3%95Wiki)**
 
 
-## 🌟 代码亮点 🌟
-
-
-
-### 🎖️ 全阵容
-
-集结**自瞄，打符，打前哨**于一体，适配**步兵，哨兵，英雄，无人机**全体兵种
-
-**Bilibili: [【RM自瞄】北洋机甲2024赛季自瞄开源！](https://www.bilibili.com/video/BV1jApUe1EPT/)** 
+## 🌟 Code Highlights 🌟
 
 
 
+### 🎖️ Full Lineup
 
+Integrates **auto-aiming, rune striking, and outpost attacking** in one, compatible with all robot types including **infantry, sentry, hero, and drone**
 
-### 🚀 流水线架构
-
-本自瞄系统采用流水线架构，可在 GPU 耗时较高的情况下保证程序运行吞吐量
-
-主流水线推理 **v5n** 网络，在 **Nvidia NX Xavier** 设备上可达 **180fps**，在 **Nvidia AGX Orin** 设备上可达 **300fps**
+**Bilibili: [【RM Auto-Aim】Beiyang RoboMaster 2024 Season Auto-Aim Open Source!](https://www.bilibili.com/video/BV1jApUe1EPT/)** 
 
 
 
 
 
-### 🙌 算法与框架分离
+### 🚀 Pipeline Architecture
+
+This auto-aiming system adopts a pipeline architecture, ensuring program throughput even when GPU processing time is high
+
+The main pipeline infers **v5n** network, achieving **180fps** on **Nvidia NX Xavier** devices and **300fps** on **Nvidia AGX Orin** devices
 
 
 
-**算法库**
 
-- 算法库采用动态链接库的形式，方便适配更多视觉项目，便于代码复用
+
+### 🙌 Algorithm and Framework Separation
+
+
+
+**Algorithm Library**
+
+- The algorithm library uses dynamic link library format, making it easy to adapt to more vision projects and facilitating code reuse
 
 - https://github.com/HHgzs/OpenRM-2024
 
 
 
-**自瞄框架**
+**Auto-Aiming Framework**
 
-- 自瞄框架无具体的算法实现，通过调用算法库中实现的算法，搭建流水线架构，实现高效与高拓展性
+- The auto-aiming framework has no specific algorithm implementation. By calling algorithms implemented in the algorithm library, it builds a pipeline architecture to achieve high efficiency and high extensibility
 
 - https://github.com/HHgzs/TJURM-2024
 
@@ -58,56 +58,56 @@
 
 
 
-### 🔌 易拓展模型
+### 🔌 Easy-to-Extend Models
 
-支持大多数队伍使用的神经网络输出格式，可支持任意尺寸的模型输入，仅需通过修改参数实现
+Supports neural network output formats used by most teams, can support model inputs of any size, only needs parameter modification to implement
 
 
 
 **V5**
 
-- 标准的 yolov5 输出格式，即  **(x + y + w + h) + conf + n * classes**
-- 其中的类别项可包含颜色也可不包含颜色
+- Standard yolov5 output format, i.e. **(x + y + w + h) + conf + n * classes**
+- The class item can include color or not
 
 **FP**
 
-- 四点格式，即 **(x0 + y0 + x1 + y1 + x2 + y2 + x3 + y3) + conf + n * classes**
-- 其中的类别项可包含颜色也可不包含颜色
+- Four-point format, i.e. **(x0 + y0 + x1 + y1 + x2 + y2 + x3 + y3) + conf + n * classes**
+- The class item can include color or not
 
 **FPX**
 
-- 四点格式，颜色与 ID 分离
+- Four-point format with color and ID separated
 - **(x0 + y0 + x1 + y1 + x2 + y2 + x3 + y3) + conf + m * color_classes + n * id_classes**
 
 
 
 
 
-## 🧬 基本特性 🧬
+## 🧬 Basic Features 🧬
 
-- 算力设备：**Nvidia NX Xavier**
-- 工业相机：**大恒 USB3.0**
-- 推荐分辨率：**1280x1024**
-- 推荐镜头：**6mm（cmos 1/2.9）**
-
-
-## 🤖 设计模式 🤖
-
-- **工厂模式**：车辆管理模块，根据配置文件生成不同车辆实例
-- **策略模式**：框架算法分离，可根据参数选择不同模块
-- **观察者模式**：串口通讯模块，根据串口控制确定自瞄模式和主流水线
-- **管道模式**: 流水线架构，实现高效的实时处理
-- **单例模式**：参数管理模块，保证参数唯一性
-- **模板方法模式**：模板数据结构，模板运动模型
+- Computing Device: **Nvidia NX Xavier**
+- Industrial Camera: **Daheng USB3.0**
+- Recommended Resolution: **1280x1024**
+- Recommended Lens: **6mm (cmos 1/2.9)**
 
 
-## 🦺 环境配置 🦺
+## 🤖 Design Patterns 🤖
+
+- **Factory Pattern**: Vehicle management module, generates different vehicle instances based on configuration files
+- **Strategy Pattern**: Framework algorithm separation, different modules can be selected according to parameters
+- **Observer Pattern**: Serial communication module, determines auto-aiming mode and main pipeline based on serial control
+- **Pipeline Pattern**: Pipeline architecture for efficient real-time processing
+- **Singleton Pattern**: Parameter management module, ensures parameter uniqueness
+- **Template Method Pattern**: Template data structures, template motion models
+
+
+## 🦺 Environment Setup 🦺
 
 
 
-### 编译安装 OpenRM
+### Compile and Install OpenRM
 
-首先需要配置 OpenRM 库，详见仓库 README，请访问 OpenRM-2024 仓库页面，记得点个星星 ⭐️
+First, you need to configure the OpenRM library. For details, see the repository README. Please visit the OpenRM-2024 repository page and don't forget to star it ⭐️
 
 https://github.com/HHgzs/OpenRM-2024
 
@@ -115,13 +115,13 @@ https://github.com/HHgzs/OpenRM-2024
 
 
 
-### 编译安装 TJURM-2024
+### Compile and Install TJURM-2024
 
-成功编译和安装 OpenRM 动态链接库后，TJURM-2024 的环境依赖基本安装完毕了
+After successfully compiling and installing the OpenRM dynamic link library, the environment dependencies for TJURM-2024 are basically installed
 
 
 
-运行 `run.sh` 自动执行编译和安装
+Run `run.sh` to automatically execute compilation and installation
 
 ```bash
 cd TJURM-2024
@@ -130,7 +130,7 @@ sudo ./run.sh
 
 
 
-安装完成后，将显示 `<--- Run Code --->`，代码正式开始运行
+After installation is complete, `<--- Run Code --->` will be displayed, and the code will officially start running
 
 ```bash
 [ 93%] Linking CXX static library libthreads.a
@@ -147,19 +147,19 @@ sudo ./run.sh
 
 
 
-由于本自瞄仓库为所有兵种共用，为避免参数等修改导致不同兵种间冲突，且为避免仓库频繁更新
+Since this auto-aiming repository is shared by all robot types, to avoid conflicts between different robot types caused by parameter modifications, and to avoid frequent repository updates
 
- `TJURM-2024/data/uniconfig` 下的参数信息将被安装到 `/etc/openrm` ，并建立名为 `TJURM-2024/config` 的软链接到 `TJURM-2024` 代码地址下
+Parameter information under `TJURM-2024/data/uniconfig` will be installed to `/etc/openrm`, and a symbolic link named `TJURM-2024/config` will be created to the `TJURM-2024` code directory
 
-此时通过访问并修改 `TJURM-2024/config` 内的参数便可直接更改系统中的参数，在下次代码运行时直接调用
+At this time, by accessing and modifying the parameters in `TJURM-2024/config`, you can directly change the parameters in the system, which will be called directly when the code runs next time
 
 
 
-### 自启动
+### Auto-Start
 
-使用**rc.local**实现自启动
+Use **rc.local** to implement auto-start
 
-首先创建**rc.local**
+First create **rc.local**
 
 ```bash
 vim /etc/rc.local
@@ -167,7 +167,7 @@ vim /etc/rc.local
 
 
 
-在**rc.local**中添加内容，千万不要忘记 **&**
+Add content to **rc.local**, don't forget the **&**
 
 ```bash
 #!/bin/bash
@@ -178,7 +178,7 @@ sudo /etc/openrm/guard.sh &
 
 
 
-添加执行权限
+Add execution permissions
 
 ```bash
 chmod 755 /etc/rc.local
@@ -186,16 +186,16 @@ chmod 755 /etc/rc.local
 
 
 
-使用 **rc-local** 服务
+Use the **rc-local** service
 
 ```bash
-# 启动服务
+# Start service
 systemctl start rc-local.service
  
-# 重启服务
+# Restart service
 systemctl restart rc-local 
 
-# 显示状态
+# Show status
 systemctl status rc-local.service
 ```
 
@@ -205,36 +205,36 @@ systemctl status rc-local.service
 
 
 
-### 图像输出
+### Image Output
 
-如果想要开启 `imshow` 功能，需在运行时加上 `-s` 指令。
-
-
-
-- 可在项目文件夹 `TJURM-2024` 内运行 `sudo ./run.sh -s`
-
-  - 该方法将调用 `guard.sh` 守护脚本，保证代码在运行中终止时立即重启
+If you want to enable the `imshow` function, you need to add the `-s` command at runtime.
 
 
-- 可在任意地址下运行 `TJURM-2024 -s`
 
-  - 由于程序已安装在 `\usr\local\bin`  该方法全局有效
-  - 该方法仅调用一次运行，不开启守护脚本
+- You can run `sudo ./run.sh -s` in the project folder `TJURM-2024`
+
+  - This method will call the `guard.sh` guard script to ensure the code restarts immediately if terminated during execution
 
 
+- You can run `TJURM-2024 -s` from any directory
+
+  - Since the program is installed in `\usr\local\bin`, this method works globally
+  - This method only calls one run, does not enable the guard script
 
 
 
 
-### 参数显示
 
-在 OpenRM 自瞄算法库中，实现了一个基于 `ncurses` 的终端参数面板，详见 **OpenRM-2024** 仓库
+
+### Parameter Display
+
+In the OpenRM auto-aiming algorithm library, a terminal parameter panel based on `ncurses` has been implemented. For details, see the **OpenRM-2024** repository
 
 https://github.com/HHgzs/OpenRM-2024
 
 
 
-#### 开启参数面板
+#### Enable Parameter Panel
 
 ```bash
 openrm -d
@@ -242,28 +242,28 @@ openrm -d
 
 
 
-**💥注意**
+**💥Note**
 
-- 如果没有 openrm 程序，请检查 OpenRM 安装中是否忽略了安装此参数面板程序的步骤
-- 详见 **OpenRM-2024** 的 `README`   https://github.com/HHgzs/OpenRM-2024
-
-
+- If there is no openrm program, please check whether the step of installing this parameter panel program was ignored during OpenRM installation
+- For details, see the `README` of **OpenRM-2024**   https://github.com/HHgzs/OpenRM-2024
 
 
 
-#### 开启示波器
-
-在参数面板左侧，有参数名称和参数值的元组，如果需要将某个或某几个参数以示波器的形式展示出来，可以使用 `openrm` 提供的示波器功能
 
 
+#### Enable Oscilloscope
 
-例如对于参数 `target omg`，对于有空格的参数，可以使用转义字符
+On the left side of the parameter panel, there are tuples of parameter names and parameter values. If you need to display one or several parameters in the form of an oscilloscope, you can use the oscilloscope function provided by `openrm`
+
+
+
+For example, for the parameter `target omg`, for parameters with spaces, you can use escape characters
 
 ```bash
 openrm -o target\ omg
 ```
 
-或者使用引号
+Or use quotes
 
 ```bash
 openrm -o "target omg"
@@ -271,7 +271,7 @@ openrm -o "target omg"
 
 
 
-最多可支持四个波形同时显示
+Up to four waveforms can be displayed simultaneously
 
 ```bash
 openrm -o "target -x-" "target -y-" "target -z-" "target omg"
@@ -287,41 +287,41 @@ openrm -o "target -x-" "target -y-" "target -z-" "target omg"
 
 
 
-## 📚️ 文件介绍 📚️
+## 📚️ File Introduction 📚️
 
 ```bash
 .
-├── CMakeLists.txt                   # CMake文件
-├── config -> /etc/openrm            # 用于修改参数的软链接
+├── CMakeLists.txt                   # CMake file
+├── config -> /etc/openrm            # Symbolic link for modifying parameters
 ├── data
-│   ├── debug                        # debug功能，逐帧存储图像
-│   ├── speed                        # 弹速记录文件存储位置
-│   ├── uniconfig                    # 统一参数，可通过 sudo ./run.sh -c 强制覆盖系统参数
-│   │   ├── CamLens.json             # 相机参数
-│   │   ├── Config.json              # 主参数，下文将详细介绍
-│   │   ├── guard.sh                 # 守护脚本
-│   │   ├── image                    # 重投影蒙版
-│   │   └── models                   # onnx模型放在这里
-│   └── video                        # 比赛内录存储位置
+│   ├── debug                        # Debug function, frame-by-frame image storage
+│   ├── speed                        # Projectile speed record file storage location
+│   ├── uniconfig                    # Unified parameters, can force overwrite system parameters via sudo ./run.sh -c
+│   │   ├── CamLens.json             # Camera parameters
+│   │   ├── Config.json              # Main parameters, detailed introduction below
+│   │   ├── guard.sh                 # Guard script
+│   │   ├── image                    # Reprojection mask
+│   │   └── models                   # ONNX models go here
+│   └── video                        # Match recording storage location
 │
 ├── include
 │   ├── data_manager
-│   │   ├── base.h                   # 基本全局参数
-│   │   └── param.h                  # 调用json读取参数
+│   │   ├── base.h                   # Basic global parameters
+│   │   └── param.h                  # Call JSON to read parameters
 │   ├── garage
-│   │   ├── garage.h                 # 车库管理头文件
-│   │   ├── interface.h              # 父类
-│   │   ├── wrapper_car.h            # 标准装甲板车派生类
-│   │   ├── wrapper_rune.h           # 打符派生类
-│   │   └── wrapper_tower.h          # 前哨站基地派生类
+│   │   ├── garage.h                 # Garage management header file
+│   │   ├── interface.h              # Parent class
+│   │   ├── wrapper_car.h            # Standard armor plate vehicle derived class
+│   │   ├── wrapper_rune.h           # Rune striking derived class
+│   │   └── wrapper_tower.h          # Outpost base derived class
 │   │
 │   └── threads
 │       ├── control
-│       │   ├── crc.h                # crc校验部分
-│       │   └── structure.h          # 与下位机通讯结构体
+│       │   ├── crc.h                # CRC verification part
+│       │   └── structure.h          # Communication structure with lower computer
 │       │
-│       ├── control.h                # 控制模块头文件
-│       └── pipeline.h               # 流水线头文件
+│       ├── control.h                # Control module header file
+│       └── pipeline.h               # Pipeline header file
 │
 ├── libs
 │   └── json
@@ -342,101 +342,101 @@ openrm -o "target -x-" "target -y-" "target -z-" "target omg"
     │   ├── wrapper_rune.cpp
     │   └── wrapper_tower.cpp
     │
-    ├── main.cpp    # 主函数，启动各线程并挂起自身
+    ├── main.cpp    # Main function, starts threads and suspends itself
     │
     └── threads
         ├── CMakeLists.txt
         ├── control
         │   ├── crc.cpp
-        │   ├── receive_thread.cpp               # 串口接收逻辑处理
-        │   └── send_thread.cpp                  # 调用目标预测，弹道解算与控制发送
-        ├── control.cpp                          # 基本收发函数
+        │   ├── receive_thread.cpp               # Serial port reception logic processing
+        │   └── send_thread.cpp                  # Call target prediction, ballistics calculation and control sending
+        ├── control.cpp                          # Basic send/receive functions
         ├── pipeline
-        │   ├── baseline                         # 自瞄主流水线，使用标准yolo矩形
-        │   │   ├── preprocessor_thread.cpp      # 流水线第一级，神经网络预处理与推入
-        │   │   ├── detector_thread.cpp          # 流水线第二级，同步推理与NMS
+        │   ├── baseline                         # Auto-aim main pipeline, uses standard YOLO rectangles
+        │   │   ├── preprocessor_thread.cpp      # Pipeline stage 1, neural network preprocessing and pushing
+        │   │   ├── detector_thread.cpp          # Pipeline stage 2, synchronous inference and NMS
         │   │   ├── tracker                      
-        │   │   │   ├── pointer.cpp              # 查找四点
-        │   │   │   ├── locater.cpp              # 位姿解算
-        │   │   │   └── updater.cpp              # 模型更新
-        │   │   └── tracker_thread.cpp           # 流水线第三级，运动模型更新
+        │   │   │   ├── pointer.cpp              # Find four points
+        │   │   │   ├── locater.cpp              # Pose estimation
+        │   │   │   └── updater.cpp              # Model update
+        │   │   └── tracker_thread.cpp           # Pipeline stage 3, motion model update
         │   │
-        │   ├── fourpoints                       # 自瞄四点流水线，使用四点网络
-        │   │   ├── preprocessor_thread.cpp      # 流水线第一级，预处理
-        │   │   ├── detector_thread.cpp          # 流水线第二级，同步推理与NMS
-        │   │   └── fourpoints.cpp               # 流水线第三级，运动模型更新
+        │   ├── fourpoints                       # Auto-aim four-point pipeline, uses four-point network
+        │   │   ├── preprocessor_thread.cpp      # Pipeline stage 1, preprocessing
+        │   │   ├── detector_thread.cpp          # Pipeline stage 2, synchronous inference and NMS
+        │   │   └── fourpoints.cpp               # Pipeline stage 3, motion model update
         │   │
-        │   ├── rune                             # 打符四点流水线
-        │   │   ├── preprocessor_thread.cpp      # 流水线第一级，预处理
-        │   │   ├── detector_thread.cpp          # 流水线第二级，同步推理与NMS
-        │   │   └── tracker_thread.cpp           # 流水线第三级，打符模型更新
+        │   ├── rune                             # Rune striking four-point pipeline
+        │   │   ├── preprocessor_thread.cpp      # Pipeline stage 1, preprocessing
+        │   │   ├── detector_thread.cpp          # Pipeline stage 2, synchronous inference and NMS
+        │   │   └── tracker_thread.cpp           # Pipeline stage 3, rune model update
         │   │
-        │   ├── image_thread.cpp                 # 图像显示与debug
-        │   ├── recording_thread.cpp             # 内录线程
-        │   └── ui.cpp                           # ui线程
+        │   ├── image_thread.cpp                 # Image display and debug
+        │   ├── recording_thread.cpp             # Recording thread
+        │   └── ui.cpp                           # UI thread
         │
-        └── pipeline.cpp                         # 流水线启动函数
+        └── pipeline.cpp                         # Pipeline startup function
 ```
 
 
 
 
 
-## 🎄 参数介绍 🎄
+## 🎄 Parameter Introduction 🎄
 
 
 
-这里主要介绍 **Debug** 部分的参数功能，其余部分如有不理解可联系作者
+This mainly introduces the parameter functions of the **Debug** section. For other parts, if you don't understand, you can contact the author
 
 
 
 ```json
 "Debug" : {
         "System" : {
-            "AutoFire" : true,            // 自动开火
-            "AutoEnemy" : true,           // 根据下位机提供颜色索敌，蓝0红1
-            "AutoRune" : true,            // 根据下位机config控制打符
-            "AutoCapture" : false         // 非自瞄状态录像
+            "AutoFire" : true,            // Automatic firing
+            "AutoEnemy" : true,           // Enemy detection based on color provided by lower computer, blue 0, red 1
+            "AutoRune" : true,            // Rune striking controlled by lower computer config
+            "AutoCapture" : false         // Recording in non-auto-aiming state
         },
         "ImageThread" : {
-            "Scale" : 0.5,                // imshow缩放尺寸
-            "FPS" : 25,                   // imshow帧率
-            "UI" : true,                  // imshow开启UI
-            "Imwrite" : false,            // 逐帧保存图像进行debug
-            "Binary" : false,             // 二值化图像显示
-            "Light" : false,              // imshow提亮
-            "Histogram" : false           // 装甲板直方图显示
+            "Scale" : 0.5,                // imshow zoom size
+            "FPS" : 25,                   // imshow frame rate
+            "UI" : true,                  // Enable UI for imshow
+            "Imwrite" : false,            // Save images frame by frame for debugging
+            "Binary" : false,             // Binary image display
+            "Light" : false,              // Brighten imshow
+            "Histogram" : false           // Armor plate histogram display
         },
         "Display" : {
-            "Reprojection" : false,       // 装甲板贴纸重投影，需开启imshow
-            "PipelineDelay" : false,      // 流水线每一级延迟
-            "PointSkip" : false           // 打印灯条筛选条件
+            "Reprojection" : false,       // Armor plate sticker reprojection, requires imshow to be enabled
+            "PipelineDelay" : false,      // Delay for each stage of pipeline
+            "PointSkip" : false           // Print light bar filtering conditions
         },
         "Control" : {
-            "Serial" : true,              // 开启下位机串口通讯线程
-            "Timeout" : true,             // 线程超时自杀
-            "ManuCapture" : false,        // 手动强制内录
-            "ManuFire" : false,           // 手动开火
-            "ManuRune" : false,           // 手动进入打符模式，调试专用
-            "BigRune" : false             // 进入打符默认小符，开启后为大符
+            "Serial" : true,              // Enable lower computer serial communication thread
+            "Timeout" : true,             // Thread timeout auto-termination
+            "ManuCapture" : false,        // Manual forced recording
+            "ManuFire" : false,           // Manual firing
+            "ManuRune" : false,           // Manual entry into rune mode, for debugging only
+            "BigRune" : false             // Entering rune defaults to small rune, big rune when enabled
         },
         "PlusPnP" : {
-            "Enable" : true,              // 上交提出的pnp方法，让我们感谢交爷
-            "CostImage" : false           // 损失函数图，需开启imshow
+            "Enable" : true,              // PnP method proposed by SJTU, let's thank them
+            "CostImage" : false           // Loss function image, requires imshow to be enabled
         },
-        "StateDelay" : {                  // 同步触发的替代品
+        "StateDelay" : {                  // Alternative to synchronized triggering
             "Enable" : true,              
             "TimeS" : 0.05,
             "QueueSize" : 100,
             "SendWait" : 10
         },
-        "SaveSpeed" : {                   // 英雄用弹速寄存器
+        "SaveSpeed" : {                   // Hero projectile speed register
             "SpeedWrite" : true,
             "SavePath" : "/etc/openrm/speed_log.txt"
         },
 
-        "BigDecal" : "/etc/openrm/image/armor1.png",        // 重投影大装甲图像
-        "SmallDecal" : "/etc/openrm/image/armor3.png"       // 重投影小装甲图像
+        "BigDecal" : "/etc/openrm/image/armor1.png",        // Reprojection large armor image
+        "SmallDecal" : "/etc/openrm/image/armor3.png"       // Reprojection small armor image
     }
 ```
 
